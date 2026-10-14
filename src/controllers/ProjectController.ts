@@ -1,5 +1,5 @@
 import type { Request, Response } from "express"
-import Project from "../models/Project";
+import IProject from "../models/Project";
 
 
 /**
@@ -10,7 +10,7 @@ import Project from "../models/Project";
 export class ProjectController {
 
    static createProject = async (req: Request, res: Response) => {
-      const project = new Project(req.body); // crea instancia del proyecto desde el modelo se le pasa el req.body que es el q trae la data
+      const project = new IProject(req.body); // crea instancia del proyecto desde el modelo se le pasa el req.body que es el q trae la data
       try{
          /**
           * OTRA FORMA DE CREAR
@@ -27,7 +27,7 @@ export class ProjectController {
    static getAllProjects = async (req: Request, res: Response) => {
 
       try{
-         const projects = await Project.find({})
+         const projects = await IProject.find({})
          res.json(projects)
       }catch(error){
          console.log(error)
@@ -39,7 +39,7 @@ export class ProjectController {
       const { id } = req.params;
             // console.log(id)
       try{
-         const project = await Project.findById(id);
+         const project = await IProject.findById(id);
          
          if(!project){
             const error = new Error("Proyecto no encontrado");
@@ -57,7 +57,7 @@ export class ProjectController {
 
        try{
 
-         const project = await Project.findByIdAndUpdate(id, req.body)
+         const project = await IProject.findByIdAndUpdate(id, req.body)
 
          if(!project){
             const error = new Error("Proyecto no Encontrado")
@@ -79,7 +79,7 @@ export class ProjectController {
 
        try {
 
-         const project = await Project.findById(id);
+         const project = await IProject.findById(id);
 
          if(!project){
             const error = new Error("Proyecto no Encontrado")
