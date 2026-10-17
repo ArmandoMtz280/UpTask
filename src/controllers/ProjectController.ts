@@ -1,5 +1,6 @@
 import type { Request, Response } from "express"
 import IProject from "../models/Project";
+import { populate } from "dotenv";
 
 
 /**
@@ -36,15 +37,20 @@ export class ProjectController {
    };
 
    static getProjectById = async (req: Request, res: Response) => {
+      console.log('Entró al controlador:', Date.now());
       const { id } = req.params;
             // console.log(id)
       try{
-         const project = await IProject.findById(id);
+         console.log('Enviando respuesta:', Date.now());
+         const project = await IProject.findById(id).populate("tasks") // Cruza la informacion de los modelos (trae la informacion de tasks)
          
          if(!project){
             const error = new Error("Proyecto no encontrado");
             return res.status(404).json({error: error.message})
          }
+
+         return res.status(200).json(project); // retorna el proyecto
+
 
       }catch(error){
          console.log(error)

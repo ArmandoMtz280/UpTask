@@ -37,11 +37,16 @@ const router = Router();
 /**RUTAS TASKS */
 
       router.post("/:projectId/tasks",
-            validateProjectExists,
+            validateProjectExists, // valida que el pryecto exita
             body("name").notEmpty().withMessage("El nombre de la tare es obligatorio"),
-            body("desription").notEmpty().withMessage("La descripcion es obligatoria"),
+            body("description").notEmpty().withMessage("La descripcion es obligatoria"),
             handleInputErrors,
             TaskController.createTask,
+      );
+
+      router.get("/:projectId/tasks",
+            validateProjectExists,
+            TaskController.getProjectTasks,
       )
 
 export default router;
