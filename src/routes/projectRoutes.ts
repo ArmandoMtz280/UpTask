@@ -35,18 +35,25 @@ const router = Router();
             ProjectController.deleteProject);   
             
 /**RUTAS TASKS */
+      // Evita repetir un parametro en este caso la validacion del priojecto
+      router.param("projectId", validateProjectExists)// valida que el pryecto exita
 
+
+      // Crea una Tarea
       router.post("/:projectId/tasks",
-            validateProjectExists, // valida que el pryecto exita
             body("name").notEmpty().withMessage("El nombre de la tare es obligatorio"),
             body("description").notEmpty().withMessage("La descripcion es obligatoria"),
             handleInputErrors,
             TaskController.createTask,
       );
-
+      // Obtiene todas las tareas
       router.get("/:projectId/tasks",
-            validateProjectExists,
             TaskController.getProjectTasks,
+      );
+      // Obtiene una Tarea por ID
+      router.get("/:projectId/tasks/:taskId",
+            param("taskId").isMongoId().withMessage("ID no valido"),
+            TaskController.getTaskById,
       )
 
 export default router;
