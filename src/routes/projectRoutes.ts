@@ -54,6 +54,19 @@ const router = Router();
       router.get("/:projectId/tasks/:taskId",
             param("taskId").isMongoId().withMessage("ID no valido"),
             TaskController.getTaskById,
-      )
+      );
+      // Actualiza una tarea
+      router.put("/:projectId/tasks/:taskId",
+            param("taskId").isMongoId().withMessage("ID no valido"), // valida el Id 
+            body("name").notEmpty().withMessage("El nombre de la tarea es Obligatorio"),
+            body("description").notEmpty().withMessage("La descripcion de la tarea es obligatoria"),
+            handleInputErrors,
+            TaskController.updateTask
+      );
+      // Borra una tarea
+      router.delete("/:projectId/tasks/:taskId",
+            param("taskId").isMongoId().withMessage("ID no valido"),
+            TaskController.deleteTask,
+      );
 
 export default router;
