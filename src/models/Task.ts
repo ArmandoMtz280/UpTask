@@ -6,7 +6,7 @@ const taskStatus = {
     IN_PROGRESS: "inProgress",
     UNDER_REVIEW: "underReview",
     COMPLETED: "completed"
-}as const // solo lectura
+} as const // solo lectura
 
 export type TaskStatus = typeof taskStatus[keyof typeof taskStatus]
 
