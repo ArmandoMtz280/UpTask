@@ -69,4 +69,12 @@ const router = Router();
             TaskController.deleteTask,
       );
 
+      // Actualizar Status 
+      router.post("/:project/tasks/:taskId/status",
+            param("taskId").isMongoId().withMessage("ID no valido"),
+            body("status").notEmpty().withMessage("El Estado es Obligatorio"),
+            handleInputErrors,
+            TaskController.updateStatus
+      )
+
 export default router;
