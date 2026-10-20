@@ -63,12 +63,16 @@ export class ProjectController {
 
        try{
 
-         const project = await IProject.findByIdAndUpdate(id, req.body)
+         const project = await IProject.findById(id)
 
          if(!project){
             const error = new Error("Proyecto no Encontrado")
             return res.status(404).json({error: error.message})
          }
+
+         project.clientName = req.body.clientName
+         project.projectName = req.body.projectName
+         project.description = req.body.descripcion
 
          await project.save(); // se guarda proyecto
          res.send("Proyecto Actualizado")

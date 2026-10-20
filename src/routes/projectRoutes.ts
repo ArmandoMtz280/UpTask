@@ -3,10 +3,14 @@ import { body, param } from "express-validator";
 import { ProjectController } from "../controllers/ProjectController";
 import { handleInputErrors } from "../middleware/validation";
 import { TaskController } from "../controllers/TaskController";
-import { validateProjectExists } from "../middleware/project";
+import { projectExists } from "../middleware/project";
+import { taskBelongsToProject, taskExists } from "../middleware/task";
 
 
 const router = Router();
+
+      // Evita repetir un parametro en este caso la validacion del priojecto
+      router.param("projectId", projectExists)// valida que el pryecto exita
 
       router.post("/",
             body("projectName").notEmpty().withMessage("Nombre de Proyecto Obligatorio"), // Validacion con express
@@ -36,8 +40,9 @@ const router = Router();
             
 /**RUTAS TASKS */
       // Evita repetir un parametro en este caso la validacion del priojecto
-      router.param("projectId", validateProjectExists)// valida que el pryecto exita
-
+      router.param("taskId", taskExists) // valida que la tarea exista
+      router.param("taskId", taskBelongsToProject) // valida que la tarea pertenezca a un proyecto
+      
 
       // Crea una Tarea
       router.post("/:projectId/tasks",
@@ -70,11 +75,11 @@ const router = Router();
       );
 
       // Actualizar Status 
-      router.post("/:project/tasks/:taskId/status",
+      router.post("/:projectId/tasks/:taskId/status",
             param("taskId").isMongoId().withMessage("ID no valido"),
             body("status").notEmpty().withMessage("El Estado es Obligatorio"),
             handleInputErrors,
-            TaskController.updateStatus
+            TaskController.updateStatus,
       )
 
 export default router;
